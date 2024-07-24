@@ -55,11 +55,7 @@ class RegisterView(View):
     def post(self, request):
         form = RegisterForm(request.POST)
         if form.is_valid():
-            user = User.objects.create_user(
-                email=form.cleaned_data['email'],
-                password=form.cleaned_data['password1'],
-                fullname=form.cleaned_data.get('fullname', '')
-            )
+            user = form.save()
             verification_code = VerificationCode.objects.create(user=user)
             verification_code.generate_code()
 

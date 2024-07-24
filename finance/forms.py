@@ -43,15 +43,22 @@ class BalanceForm(forms.ModelForm):
 class IncomeForm(forms.ModelForm):
     class Meta:
         model = Income
-        fields = ['balance', 'amount', 'currency', 'comment', 'types']
+        fields = ['amount', 'currency', 'comment', 'balance', 'types']
 
     def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
-        self.fields['balance'].widget.attrs.update({'class': 'form-control'})
+
         self.fields['amount'].widget.attrs.update({'class': 'form-control'})
         self.fields['currency'].widget.attrs.update({'class': 'form-control'})
         self.fields['comment'].widget.attrs.update({'class': 'form-control'})
-        self.fields['types'].widget.attrs.update({'class': 'form-control'})
+        self.fields['balance'].widget.attrs.update({'class': 'form-control'})
+
+        self.fields['types'] = forms.ModelChoiceField(
+            queryset=CreateType.objects.filter(user=user),
+            widget=forms.RadioSelect,
+            empty_label=None
+        )
 
 
 class OutcomeForm(forms.ModelForm):

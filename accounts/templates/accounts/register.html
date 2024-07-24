@@ -9,6 +9,9 @@
         .form-label {
             font-weight: bold;
         }
+        .errorlist {
+            color: red;
+        }
     </style>
 </head>
 <body class="d-flex align-items-center justify-content-center vh-100 bg-light">
@@ -20,22 +23,7 @@
                     <h2 class="text-center mb-4 display-6">Register</h2>
                     <form method="post">
                         {% csrf_token %}
-                        <div class="mb-3">
-                            {{ form.fullname.label_tag }}
-                            {{ form.fullname }}
-                        </div>
-                        <div class="mb-3">
-                            {{ form.email.label_tag }}
-                            {{ form.email }}
-                        </div>
-                        <div class="mb-3">
-                            {{ form.password1.label_tag }}
-                            {{ form.password1 }}
-                        </div>
-                        <div class="mb-3">
-                            {{ form.password2.label_tag }}
-                            {{ form.password2 }}
-                        </div>
+                        {{ form.as_p }}
                         <button type="submit" class="btn btn-primary w-100">Register</button>
                     </form>
                     <p class="text-center mt-3">

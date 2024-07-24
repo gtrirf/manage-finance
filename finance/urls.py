@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
-from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 from .views import (
     TypeIconsListView, CreateTypeListView, CreateTypeCreateView, CreateTypeUpdateView,
     CreateTypeDeleteView, ValyutaListView, BalanceListView, BalanceCreateView,
@@ -51,4 +52,6 @@ urlpatterns = [
     path('outcome/<int:pk>/delete/', OutcomeDeleteView.as_view(), name='outcome_delete'),
 ]
 
-
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

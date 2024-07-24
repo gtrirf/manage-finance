@@ -24,8 +24,10 @@
                         <img src="{{ createtype.type_icon.type_icon.url }}" alt="{{ createtype.type_icon.name_icon }}" width="50">
                     </td>
                     <td>
-                        <a href="{% url 'createtype_update' createtype.pk %}" class="btn btn-warning btn-sm">Edit</a>
-                        <a href="{% url 'createtype_delete' createtype.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                        {% if createtype.user == request.user %}
+                            <a href="{% url 'createtype_update' createtype.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="{% url 'createtype_delete' createtype.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                        {% endif %}
                     </td>
                 </tr>
                 {% endfor %}

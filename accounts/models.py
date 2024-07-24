@@ -3,8 +3,8 @@ from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.utils.translation import gettext_lazy as _
 from .managers import CustomUserManager
 from django.utils import timezone
-from django.contrib.auth import get_user_model
 import random
+
 
 
 class CustomUser(AbstractUser):
@@ -37,7 +37,7 @@ class CustomUser(AbstractUser):
 
 
 class VerificationCode(models.Model):
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     code = models.CharField(max_length=6, db_index=True)
     created_at = models.DateTimeField(default=timezone.now)
 

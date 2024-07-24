@@ -89,12 +89,12 @@ class CreateTypeCreateView(View):
 
 class CreateTypeUpdateView(View):
     def get(self, request, pk):
-        createtype = get_object_or_404(CreateType, pk=pk)
+        createtype = get_object_or_404(CreateType, pk=pk, user=request.user)
         form = CreateTypeForm(instance=createtype)
         return render(request, 'createtype_form.html', {'form': form})
 
     def post(self, request, pk):
-        createtype = get_object_or_404(CreateType, pk=pk)
+        createtype = get_object_or_404(CreateType, pk=pk, user=request.user)
         form = CreateTypeForm(request.POST, request.FILES, instance=createtype)
         if form.is_valid():
             form.save()
@@ -104,14 +104,13 @@ class CreateTypeUpdateView(View):
 
 class CreateTypeDeleteView(View):
     def get(self, request, pk):
-        createtype = get_object_or_404(CreateType, pk=pk)
+        createtype = get_object_or_404(CreateType, pk=pk, user=request.user)
         return render(request, 'createtype_confirm_delete.html', {'createtype': createtype})
 
     def post(self, request, pk):
-        createtype = get_object_or_404(CreateType, pk=pk)
+        createtype = get_object_or_404(CreateType, pk=pk, user=request.user)
         createtype.delete()
         return redirect('createtype_list')
-
 
 class ValyutaListView(View):
     def get(self, request):
@@ -160,7 +159,7 @@ class ValyutaListView(View):
 
 class BalanceListView(View):
     def get(self, request):
-        balances = Balance.objects.all()
+        balances = Balance.objects.filter(user=request.user)
         return render(request, 'balance_list.html', {'balances': balances})
 
 
@@ -181,12 +180,12 @@ class BalanceCreateView(View):
 
 class BalanceUpdateView(View):
     def get(self, request, pk):
-        balance = get_object_or_404(Balance, pk=pk)
+        balance = get_object_or_404(Balance, pk=pk, user=request.user)
         form = BalanceForm(instance=balance)
         return render(request, 'balance_form.html', {'form': form})
 
     def post(self, request, pk):
-        balance = get_object_or_404(Balance, pk=pk)
+        balance = get_object_or_404(Balance, pk=pk, user=request.user)
         form = BalanceForm(request.POST, request.FILES, instance=balance)
         if form.is_valid():
             form.save()
@@ -196,18 +195,18 @@ class BalanceUpdateView(View):
 
 class BalanceDeleteView(View):
     def get(self, request, pk):
-        balance = get_object_or_404(Balance, pk=pk)
+        balance = get_object_or_404(Balance, pk=pk, user=request.user)
         return render(request, 'balance_confirm_delete.html', {'balance': balance})
 
     def post(self, request, pk):
-        balance = get_object_or_404(Balance, pk=pk)
+        balance = get_object_or_404(Balance, pk=pk, user=request.user)
         balance.delete()
         return redirect('balance_list')
 
 
 class IncomeListView(View):
     def get(self, request):
-        incomes = Income.objects.all()
+        incomes = Income.objects.filter(user=request.user)
         return render(request, 'income_list.html', {'incomes': incomes})
 
 
@@ -228,12 +227,12 @@ class IncomeCreateView(View):
 
 class IncomeUpdateView(View):
     def get(self, request, pk):
-        income = get_object_or_404(Income, pk=pk)
+        income = get_object_or_404(Income, pk=pk, user=request.user)
         form = IncomeForm(instance=income)
         return render(request, 'income_form.html', {'form': form})
 
     def post(self, request, pk):
-        income = get_object_or_404(Income, pk=pk)
+        income = get_object_or_404(Income, pk=pk, user=request.user)
         form = IncomeForm(request.POST, request.FILES, instance=income)
         if form.is_valid():
             form.save()
@@ -243,18 +242,18 @@ class IncomeUpdateView(View):
 
 class IncomeDeleteView(View):
     def get(self, request, pk):
-        income = get_object_or_404(Income, pk=pk)
+        income = get_object_or_404(Income, pk=pk, user=request.user)
         return render(request, 'income_confirm_delete.html', {'income': income})
 
     def post(self, request, pk):
-        income = get_object_or_404(Income, pk=pk)
+        income = get_object_or_404(Income, pk=pk, user=request.user)
         income.delete()
         return redirect('income_list')
 
 
 class OutcomeListView(View):
     def get(self, request):
-        outcomes = Outcome.objects.all()
+        outcomes = Outcome.objects.filter(user=request.user)
         return render(request, 'outcome_list.html', {'outcomes': outcomes})
 
 
@@ -275,26 +274,25 @@ class OutcomeCreateView(View):
 
 class OutcomeUpdateView(View):
     def get(self, request, pk):
-        outcome = get_object_or_404(Outcome, pk=pk)
+        outcome = get_object_or_404(Outcome, pk=pk, user=request.user)
         form = OutcomeForm(instance=outcome)
         return render(request, 'outcome_form.html', {'form': form})
 
     def post(self, request, pk):
-        outcome = get_object_or_404(Outcome, pk=pk)
+        outcome = get_object_or_404(Outcome, pk=pk, user=request.user)
         form = OutcomeForm(request.POST, request.FILES, instance=outcome)
         if form.is_valid():
             form.save()
             return redirect('outcome_list')
         return render(request, 'outcome_form.html', {'form': form})
 
-
 class OutcomeDeleteView(View):
     def get(self, request, pk):
-        outcome = get_object_or_404(Outcome, pk=pk)
+        outcome = get_object_or_404(Outcome, pk=pk, user=request.user)
         return render(request, 'outcome_confirm_delete.html', {'outcome': outcome})
 
     def post(self, request, pk):
-        outcome = get_object_or_404(Outcome, pk=pk)
+        outcome = get_object_or_404(Outcome, pk=pk, user=request.user)
         outcome.delete()
         return redirect('outcome_list')
 
@@ -319,8 +317,8 @@ class IncomeOutcomeData(View):
             for i in range(0, 7):
                 day = today - timedelta(days=i)
                 data['labels'].insert(0, day.strftime('%Y-%m-%d'))
-                income_sum = Income.objects.filter(date__date=day).aggregate(Sum('amount'))['amount__sum'] or 0
-                outcome_sum = Outcome.objects.filter(date__date=day).aggregate(Sum('amount'))['amount__sum'] or 0
+                income_sum = Income.objects.filter(user=request.user, date__date=day).aggregate(Sum('amount'))['amount__sum'] or 0
+                outcome_sum = Outcome.objects.filter(user=request.user, date__date=day).aggregate(Sum('amount'))['amount__sum'] or 0
                 data['incomes'].insert(0, income_sum)
                 data['outcomes'].insert(0, outcome_sum)
 
@@ -329,8 +327,8 @@ class IncomeOutcomeData(View):
                 start_week = today - timedelta(weeks=i)
                 end_week = start_week + timedelta(days=6)
                 data['labels'].insert(0, f'{start_week.strftime("%Y-%m-%d")} - {end_week.strftime("%Y-%m-%d")}')
-                income_sum = Income.objects.filter(date__date__range=[start_week, end_week]).aggregate(Sum('amount'))['amount__sum'] or 0
-                outcome_sum = Outcome.objects.filter(date__date__range=[start_week, end_week]).aggregate(Sum('amount'))['amount__sum'] or 0
+                income_sum = Income.objects.filter(user=request.user, date__date__range=[start_week, end_week]).aggregate(Sum('amount'))['amount__sum'] or 0
+                outcome_sum = Outcome.objects.filter(user=request.user, date__date__range=[start_week, end_week]).aggregate(Sum('amount'))['amount__sum'] or 0
                 data['incomes'].insert(0, income_sum)
                 data['outcomes'].insert(0, outcome_sum)
 
@@ -340,8 +338,8 @@ class IncomeOutcomeData(View):
                 month_start = month.replace(day=1)
                 next_month_start = (month_start + timedelta(days=32)).replace(day=1)
                 data['labels'].insert(0, month.strftime('%Y-%m'))
-                income_sum = Income.objects.filter(date__date__range=[month_start, next_month_start]).aggregate(Sum('amount'))['amount__sum'] or 0
-                outcome_sum = Outcome.objects.filter(date__date__range=[month_start, next_month_start]).aggregate(Sum('amount'))['amount__sum'] or 0
+                income_sum = Income.objects.filter(user=request.user, date__date__range=[month_start, next_month_start]).aggregate(Sum('amount'))['amount__sum'] or 0
+                outcome_sum = Outcome.objects.filter(user=request.user, date__date__range=[month_start, next_month_start]).aggregate(Sum('amount'))['amount__sum'] or 0
                 data['incomes'].insert(0, income_sum)
                 data['outcomes'].insert(0, outcome_sum)
 
@@ -349,8 +347,8 @@ class IncomeOutcomeData(View):
             for i in range(0, 5):
                 year = today.year - i
                 data['labels'].insert(0, str(year))
-                income_sum = Income.objects.filter(date__year=year).aggregate(Sum('amount'))['amount__sum'] or 0
-                outcome_sum = Outcome.objects.filter(date__year=year).aggregate(Sum('amount'))['amount__sum'] or 0
+                income_sum = Income.objects.filter(user=request.user, date__year=year).aggregate(Sum('amount'))['amount__sum'] or 0
+                outcome_sum = Outcome.objects.filter(user=request.user, date__year=year).aggregate(Sum('amount'))['amount__sum'] or 0
                 data['incomes'].insert(0, income_sum)
                 data['outcomes'].insert(0, outcome_sum)
 
