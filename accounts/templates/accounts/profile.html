@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+    profile
+{% endblock title %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h2>Profile</h2>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Full Name:</strong> {{ user.get_full_name }}</p>
+        <a href="{% url 'profile-edit' %}" class="btn btn-primary">Edit Profile</a>
+        <a href="{% url 'logout' %}" class="btn btn-secondary">Logout</a>
+    </div>
+
+{% endblock content %}

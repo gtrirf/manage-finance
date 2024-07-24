@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Create/Update Type
+{% endblock title %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h2 class="mb-4">Create/Update Type</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+                {{ form.type_name.label_tag }}
+                {{ form.type_name }}
+            </div>
+            <div class="mb-3">
+                {{ form.type_choice.label_tag }}
+                {{ form.type_choice }}
+            </div>
+            <div class="mb-3">
+                {{ form.type_icon.label_tag }}
+                {{ form.type_icon }}
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
+{% endblock content %}

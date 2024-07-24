@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Types{% endblock title %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1>Create Types</h1>
+        <a href="{% url 'createtype_create' %}" class="btn btn-primary mb-3">Add New Type</a>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Icon</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for createtype in createtypes %}
+                <tr>
+                    <td>{{ createtype.type_name }}</td>
+                    <td>{{ createtype.get_type_choice_display }}</td>
+                    <td>
+                        <img src="{{ createtype.type_icon.type_icon.url }}" alt="{{ createtype.type_icon.name_icon }}" width="50">
+                    </td>
+                    <td>
+                        <a href="{% url 'createtype_update' createtype.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                        <a href="{% url 'createtype_delete' createtype.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock content %}

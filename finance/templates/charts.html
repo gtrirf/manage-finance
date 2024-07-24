@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Dashboard
+{% endblock title %}
+
+{% block content %}
+    <div>
+        <h2 class="display-6">Income and Outcome Charts</h2>
+        <button onclick="loadChart('daily')" class="btn btn-outline-warning">Daily</button>
+        <button onclick="loadChart('weekly')" class="btn btn-outline-warning">Weekly</button>
+        <button onclick="loadChart('monthly')" class="btn btn-outline-warning">Monthly</button>
+        <button onclick="loadChart('yearly')" class="btn btn-outline-warning">Yearly</button>
+    </div>
+    <canvas id="incomeOutcomeChart"></canvas>
+    <script>
+
+        var ctx = document.getElementById('incomeOutcomeChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'bar', // Change this to 'bar' for bar charts
+            data: {
+                labels: [],
+                datasets: [
+                    {
+                        label: 'Incomes',
+                        backgroundColor: 'rgba(0, 255, 0, 0.5)', // Make sure to use backgroundColor for bar charts
+                        borderColor: 'green',
+                        borderWidth: 1,
+                        data: []
+                    },
+                    {
+                        label: 'Outcomes',
+                        backgroundColor: 'rgba(255, 0, 0, 0.5)', // Make sure to use backgroundColor for bar charts
+                        borderColor: 'red',
+                        borderWidth: 1,
+                        data: []
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    x: {
+                        beginAtZero: true
+                    },
+                    y: {
+                        beginAtZero: true,
+                        suggestedMax: 1000 // Set an initial suggested max value
+                    }
+                }
+            }
+        });
+
+        function loadChart(period) {
+            fetch(`/income-outcome-data/${period}/`)
+                .then(response => response.json())
+                .then(data => {
+                    chart.data.labels = data.labels;
+                    chart.data.datasets[0].data = data.incomes;
+                    chart.data.datasets[1].data = data.outcomes;
+
+                    // Determine the maximum value from incomes and outcomes
+                    const maxIncome = Math.max(...data.incomes);
+                    const maxOutcome = Math.max(...data.outcomes);
+                    const maxValue = Math.max(maxIncome, maxOutcome);
+
+                    // Update y-axis max value
+                    chart.options.scales.y.max = maxValue * 1.1; // Add 10% padding to the top
+
+                    chart.update();
+                });
+        }
+
+        // Load default chart
+        loadChart('weekly');
+    </script>
+{% endblock content %}

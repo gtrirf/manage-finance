@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Balance List</h1>
+    <div class="container">
+        <a href="{% url 'balance_create' %}" class="btn btn-primary mb-3">Add New Balance</a>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Value</th>
+                    <th>Currency</th>
+                    <th>Created At</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for balance in balances %}
+                    <tr>
+                        <td>{{ balance.types }}</td>
+                        <td>{{ balance.value }}</td>
+                        <td>{{ balance.currency.name_valyuta }}</td>
+                        <td>{{ balance.created_at }}</td>
+                        <td>
+                            <a href="{% url 'balance_update' balance.pk %}" class="btn btn-sm btn-warning">
+                                <span class="material-symbols-outlined">edit</span>
+                            </a>
+                            <a href="{% url 'balance_delete' balance.pk %}" class="btn btn-sm btn-danger">
+                                <span class="material-symbols-outlined">delete</span>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

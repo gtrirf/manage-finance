@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Outcome List
+{% endblock title %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h2 class="mb-4">Outcome List</h2>
+        <a href="{% url 'outcome_create' %}" class="btn btn-primary mb-3">Add New Outcome</a>
+        <ul class="list-group">
+            {% for outcome in outcomes %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ outcome.balance }} - {{ outcome.amount }} {{ outcome.currency }}  {{ outcome.comment }}
+                    <div>
+                        <a href="{% url 'outcome_update' outcome.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                        <a href="{% url 'outcome_delete' outcome.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock content %}
