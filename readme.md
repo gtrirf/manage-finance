@@ -1,5 +1,6 @@
 # Moliya Menejmenti Loyihasi
 
+# defoult adminuser email: admin@gmail.com parol: 123
 Bu loyiha moliyaviy daromadlar va chiqimlarni boshqarish uchun veb-ilova yaratishdan iborat. 
 Foydalanuvchilar o'zlarining moliyaviy ko'rsatkichlarini kuzatish, 
 turli vaqt oralig'ida daromad va chiqimlarni ko'rish, shuningdek, yangi turdagi moliyaviy 
