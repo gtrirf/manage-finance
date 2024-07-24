@@ -1,4 +1,3 @@
-# views.py
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.views import View
@@ -58,13 +57,12 @@ class RegisterView(View):
         if form.is_valid():
             user = User.objects.create_user(
                 email=form.cleaned_data['email'],
-                password=form.cleaned_data['password1'],  # Use password1 for consistency
+                password=form.cleaned_data['password1'],
                 fullname=form.cleaned_data.get('fullname', '')
             )
             verification_code = VerificationCode.objects.create(user=user)
             verification_code.generate_code()
 
-            # Send the email with the verification code
             send_mail(
                 'Verify Your Email',
                 f'Your verification code is {verification_code.code}',
@@ -73,8 +71,8 @@ class RegisterView(View):
                 fail_silently=False,
             )
 
-            request.session['email'] = user.email  # Store email in session for verification
-            return redirect('verify-email')  # Redirect to the verification page
+            request.session['email'] = user.email
+            return redirect('verify-email')
 
         return render(request, 'accounts/register.html', {'form': form})
 
@@ -88,7 +86,7 @@ class VerifyEmailView(View):
         form = VerificationForm(request.POST)
         if form.is_valid():
             code = form.cleaned_data['code']
-            email = request.session.get('email')  # Retrieve email from session
+            email = request.session.get('email')
             try:
                 verification_code = VerificationCode.objects.get(code=code, user__email=email)
                 if verification_code.is_valid():
@@ -96,7 +94,7 @@ class VerifyEmailView(View):
                     user.is_active = True
                     user.save()
                     verification_code.delete()
-                    del request.session['email']  # Clear the session value
+                    del request.session['email']
                     return redirect('login')
                 else:
                     form.add_error(None, 'The code has expired')

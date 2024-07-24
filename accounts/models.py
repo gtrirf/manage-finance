@@ -1,4 +1,3 @@
-# models.py
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.utils.translation import gettext_lazy as _
@@ -39,7 +38,7 @@ class CustomUser(AbstractUser):
 
 class VerificationCode(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
-    code = models.CharField(max_length=6, db_index=True)  # Added index for faster lookups
+    code = models.CharField(max_length=6, db_index=True)
     created_at = models.DateTimeField(default=timezone.now)
 
     def is_valid(self):
