@@ -11,7 +11,7 @@
         <ul class="list-group">
             {% for income in incomes %}
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                    {{ income.name }} + {{ income.amount }} {{ income.currency }}
+                    {{ income.balance }} + {{ income.amount }} {{ income.currency }}
                     <a href="{% url 'income_update' income.pk %}" class="btn btn-warning btn-sm ">Edit</a>
                     <a href="{% url 'income_delete' income.pk %}" class="btn btn-danger btn-sm">Delete</a>
 

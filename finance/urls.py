@@ -21,7 +21,7 @@ urlpatterns = [
     # path('typeicons/<int:pk>/delete/', TypeIconsDeleteView.as_view(), name='typeicons_delete'),
 
     # CreateType URLs
-    # path('createtype/', CreateTypeListView.as_view(), name='createtype_list'),
+    path('createtype/', CreateTypeListView.as_view(), name='createtype_list'),
     path('createtype/create/', CreateTypeCreateView.as_view(), name='createtype_create'),
     path('createtype/<int:pk>/update/', CreateTypeUpdateView.as_view(), name='createtype_update'),
     path('createtype/<int:pk>/delete/', CreateTypeDeleteView.as_view(), name='createtype_delete'),
